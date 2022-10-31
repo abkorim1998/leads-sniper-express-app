@@ -2,7 +2,7 @@ require('dotenv').config();
 const express = require('express');
 
 const {
-    getHtml
+    getSocialMediaLinks,
 } = require("./digitaloceanApiFunction.js");
 
 const app = express()
@@ -26,12 +26,51 @@ app.get('/', (req, res) => {
 });
 
 
+// fetch('http://10.0.0.105:3000/queryWebsite', {
+//     method: 'POST',
+//     headers: {
+//         'Content-Type': 'application/json'
+//     },
+//     body: JSON.stringify([
+//         {
+//             "name": "example.com",
+//             "url": "http://example.com"
+//         },
+//         {
+//             "name": "example.com",
+//             "url": "http://example.com"
+//         },
+//         {
+//             "name": "example.com",
+//             "url": "http://example.com"
+//         },
+//     ])
+// })
+// .then(data => data.json())
+// .then(data => console.log(data))
+
+
+app.post('/queryWebsite', (req, res) => {
+    const websites = req.body;
+    const promises = websites.map(website => getSocialMediaLinks(website.url));
+    Promise.all(promises)
+        .then(data => {
+            const result = data.map((item, index) => {
+                return {
+                    name: websites[index].name,
+                    url: websites[index].url,
+                    ...item
+                }
+            })
+            res.json(result);
+        });
+});
+
 //queryWebsite route
 app.get('/queryWebsite', async (req, res) => {
     const {website} = req.query;
-    res.send(await getHtml(website));
+    res.send(await getSocialMediaLinks(website));
 });
-
 
 
 app.listen(port, () => {

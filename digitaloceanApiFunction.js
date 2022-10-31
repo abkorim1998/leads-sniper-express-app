@@ -12,7 +12,7 @@ const defaultValue = {
     youtube_url: ' '
 }
 
-async function getHtml(url) {
+async function getSocialMediaLinks(url) {
     try {
         const response = await fetch(url);
         if (!response.ok) {
@@ -110,5 +110,5 @@ function cleanEmailStringFromParameters(string) {
 
 
 module.exports = {
-    getHtml
+    getSocialMediaLinks
 };
