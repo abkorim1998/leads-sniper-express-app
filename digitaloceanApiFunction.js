@@ -15,8 +15,10 @@ const defaultValue = {
 async function getSocialMediaLinks(url) {
     try {
         const response = await fetch(url, {
-            // set timeout to 3 seconds
-            timeout: 3000,
+            // what is default timeout?
+            // timeout: 10000
+            // set timeout to 5 seconds
+            timeout: 5000
         });
         if (!response.ok) {
             return defaultValue;
